@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Injection Molding Defect Prediction</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#111c33; --ink:#e8eef7; --muted:#9fb0c8;
+    --accent:#4f9dde; --scrap:#e05563; --line:#22304d;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Segoe UI",system-ui,Arial,sans-serif;
+    overflow:hidden;
+  }
+  .slide{
+    position:absolute; inset:0; display:none;
+    flex-direction:column; justify-content:center;
+    padding:5vh 8vw; opacity:0; transition:opacity .25s ease;
+  }
+  .slide.active{display:flex; opacity:1}
+  h1{font-size:5.2vw; line-height:1.08; margin-bottom:2.2vh}
+  h2{font-size:3.4vw; color:var(--accent); margin-bottom:3vh; line-height:1.12}
+  .sub{font-size:2vw; color:var(--muted); margin-bottom:1.5vh}
+  ul{list-style:none; margin-top:1vh}
+  li{font-size:2.05vw; line-height:1.55; padding-left:1.6em; position:relative; margin-bottom:1.1vh}
+  li::before{content:"\25B8"; color:var(--accent); position:absolute; left:0}
+  .row{display:flex; gap:3vw; align-items:center}
+  .col{flex:1; min-width:0}
+  .media{flex:1.1; display:flex; justify-content:center; align-items:center}
+  .media img{max-width:100%; max-height:74vh; border-radius:10px; border:1px solid var(--line); background:#fff}
+  .big-num{font-size:6vw; color:var(--accent); font-weight:700; line-height:1}
+  .name{font-size:2.2vw; color:var(--muted); margin-top:3vh}
+  .center{align-items:center; text-align:center}
+  .pill{display:inline-block; font-size:1.5vw; color:var(--muted); border:1px solid var(--line);
+    border-radius:999px; padding:.4em 1em; margin-top:2vh}
+  .footer{position:fixed; bottom:2.4vh; right:3vw; font-size:1.3vw; color:var(--muted)}
+  .hint{position:fixed; bottom:2.4vh; left:3vw; font-size:1.15vw; color:#5a6b86}
+  .accent{color:var(--accent)} .scrap{color:var(--scrap)}
+  table{border-collapse:collapse; font-size:1.9vw; margin-top:1vh}
+  td,th{border:1px solid var(--line); padding:.5em 1em; text-align:left}
+  th{color:var(--accent)}
+  .win{color:var(--accent); font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- 1 Title -->
+<section class="slide center">
+  <h1>Injection Molding<br>Defect Prediction</h1>
+  <div class="sub">Predicting good vs scrap parts from a machine's own settings</div>
+  <div class="pill">Advanced Machine Learning Capstone</div>
+  <div class="name">James Mahinda</div>
+</section>
+
+<!-- 2 Problem -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>The problem, and why it matters</h2>
+      <ul>
+        <li>Factories catch defective parts late, during inspection</li>
+        <li>By then material and machine time are already wasted</li>
+        <li>Every bad cycle is money lost</li>
+        <li>A drifting machine can scrap a whole batch</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/machine_photo.jpg" alt="machine"></div>
+  </div>
+</section>
+
+<!-- 3 How it works -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>How the machine works</h2>
+      <ul>
+        <li><b>Feed</b> plastic pellets in</li>
+        <li><b>Melt</b> them with a heated screw</li>
+        <li><b>Inject</b> into a mold under pressure</li>
+        <li><b>Cool</b>, then <b>eject</b> the part</li>
+        <li>One part per cycle, and every cycle its settings are recorded</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/machine_diagram.png" alt="diagram"></div>
+  </div>
+</section>
+
+<!-- 4 The idea -->
+<section class="slide center">
+  <h2>The idea</h2>
+  <ul style="max-width:80vw">
+    <li>Use the settings the machine already records</li>
+    <li>Predict good vs scrap <span class="accent">immediately</span>, not after inspection</li>
+    <li>Point to <span class="accent">which settings</span> caused the risk</li>
+    <li>So an operator fixes the machine before making more scrap</li>
+  </ul>
+</section>
+
+<!-- 5 Data -->
+<section class="slide">
+  <h2>The data</h2>
+  <ul>
+    <li>Real production data from a plastics company (iGuzzini)</li>
+    <li><b>1,451</b> molding cycles</li>
+    <li><b>13</b> process parameters per cycle, plus a quality label</li>
+    <li>Clean: no missing values, no duplicates</li>
+  </ul>
+</section>
+
+<!-- 6 EDA -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>Do the settings differ between good and scrap?</h2>
+      <ul>
+        <li>Yes, several settings clearly differ</li>
+        <li><span class="accent">Cycle time</span> separates them the most</li>
+        <li>So there is real signal to learn from</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/boxplots.png" alt="boxplots"></div>
+  </div>
+</section>
+
+<!-- 7 Separability -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>Can a straight line separate them?</h2>
+      <ul>
+        <li>Squashed 13 settings into 2D with PCA</li>
+        <li>Good and scrap <span class="scrap">overlap</span>, no straight line splits them</li>
+        <li>Straight line model: scrap F1 <b>0.74</b></li>
+        <li>Curved model: scrap F1 <b class="accent">0.85</b></li>
+        <li>So the data genuinely needs a flexible model</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/pca_scatter.png" alt="pca"></div>
+  </div>
+</section>
+
+<!-- 8 Models -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>The models</h2>
+      <table>
+        <tr><th>Model</th><th>Scrap F1</th></tr>
+        <tr><td>Logistic Regression (baseline)</td><td>0.71</td></tr>
+        <tr><td>SVM (curved)</td><td>0.85</td></tr>
+        <tr><td class="win">XGBoost</td><td class="win">0.97</td></tr>
+      </table>
+      <ul style="margin-top:2vh">
+        <li>XGBoost wins: about <b>98%</b> accuracy</li>
+        <li>Catches ~71 of 74 scrap, misses only ~3</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/model_comparison.png" alt="comparison"></div>
+  </div>
+</section>
+
+<!-- 9 Confusion -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>How XGBoost does on the test set</h2>
+      <ul>
+        <li>291 parts it had never seen</li>
+        <li>Scrap precision <b>0.97</b>, recall <b>0.96</b></li>
+        <li>Very few missed defects, very few false alarms</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/confusion.png" alt="confusion"></div>
+  </div>
+</section>
+
+<!-- 10 SHAP -->
+<section class="slide">
+  <div class="row">
+    <div class="col">
+      <h2>Explaining the prediction</h2>
+      <ul>
+        <li>A score alone is not enough on a factory floor</li>
+        <li><span class="accent">SHAP</span> shows which settings drove each decision</li>
+        <li>Turns a black box into something an operator can act on</li>
+      </ul>
+    </div>
+    <div class="media"><img src="assets/shap_summary.png" alt="shap"></div>
+  </div>
+</section>
+
+<!-- 11 Anomaly -->
+<section class="slide center">
+  <h2>Catching new faults without labels</h2>
+  <ul style="max-width:80vw">
+    <li>Isolation Forest learns what a <b>normal</b> cycle looks like</li>
+    <li>Flags the unusual ones, <b>no labels needed</b></li>
+    <li>Catches about a third of scrap on its own</li>
+    <li>A safety net for factories with no labeled data, or brand new faults</li>
+  </ul>
+</section>
+
+<!-- 12 Honesty -->
+<section class="slide">
+  <h2>Being honest about the 98%</h2>
+  <ul>
+    <li>The quality grades were made at deliberately different settings</li>
+    <li>So the settings line up strongly with the outcome</li>
+    <li>In a live factory the signal would be subtler, scores lower</li>
+    <li>The method holds, it would need retraining on that factory's data</li>
+  </ul>
+</section>
+
+<!-- 13 Demo -->
+<section class="slide center">
+  <h1 class="accent">Live demo</h1>
+  <div class="sub" style="margin-top:2vh">Enter a cycle's settings, get back the scrap risk<br>and the top settings behind it</div>
+</section>
+
+<!-- 14 Lessons -->
+<section class="slide">
+  <h2>Lessons learned</h2>
+  <ul>
+    <li>Check the simple option first (linear separability) before reaching for advanced models</li>
+    <li>Explaining a model matters as much as its accuracy</li>
+    <li>Being honest about why a score is high builds trust</li>
+    <li>The real value is making the output actionable, not just accurate</li>
+  </ul>
+</section>
+
+<!-- 15 Thanks -->
+<section class="slide center">
+  <h2>Next steps and thank you</h2>
+  <ul style="max-width:80vw">
+    <li>Drift forecasting: predict when the machine is trending toward scrap</li>
+    <li>Connect to a live machine feed inside a factory system</li>
+  </ul>
+  <div class="name" style="margin-top:5vh">Thank you. Questions?</div>
+</section>
+
+<div class="footer"><span id="cur">1</span> / <span id="tot">15</span></div>
+<div class="hint">arrow keys or space to move</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  document.getElementById('tot').textContent=slides.length;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    document.getElementById('cur').textContent=i+1;
+  }
+  function next(){show(i+1)} function prev(){show(i-1)}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next()}
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev()}
+    else if(e.key==='Home'){show(0)} else if(e.key==='End'){show(slides.length-1)}
+  });
+  document.addEventListener('click',e=>{ if(e.clientX < window.innerWidth*0.25){prev()} else {next()} });
+  show(0);
+</script>
+</body>
+</html>
