@@ -123,15 +123,15 @@ Say: I also added an anomaly detector that needs no labels at all. It learns wha
 
 ---
 
-## Slide 11 - Being honest about it
+## Slide 11 - Scope of the results
 
 On screen:
-- The high accuracy partly reflects the dataset
-- The quality grades were made at deliberately different machine settings
-- In a live factory the signal would be subtler
-- The method holds, it would need retraining on that factory's own cycles
+- Scores are measured on a held-out test set the model never saw
+- Validated on one public dataset: one product, one machine, five production days
+- Other products or machines would need retraining and fresh validation
+- The numbers are solid for this data, next is proving them on more machines
 
-Say: I want to be honest about the 98 percent. It is partly because in this dataset the quality grades were produced at deliberately different settings, so the settings line up strongly with the outcome. In a real factory where everything runs at one target setting, the signal would be subtler and the scores lower. The approach still works, it would just need retraining on that factory's own data.
+Say: A quick word on scope. These scores are measured on a test set the model never saw during training, so they are a fair result, not the model marking its own homework. What I have validated is this one dataset: one product, one machine, recorded over five production days. To use it on a different product or machine you would retrain on that data and validate there. So the results are solid for this data, and the natural next step is proving them on more machines.
 
 ---
 
@@ -174,7 +174,7 @@ Q: Why not just use the simple model?
 A: Because I tested it. A straight line only reached 0.74 while a curved model reached 0.85, so the data needs the flexibility.
 
 Q: Isn't 98 percent too good to be real?
-A: Partly yes, and I say so. The grades were made at different settings so they line up with the outcome. In a live plant it would be lower and would need retraining on that plant's data.
+A: It is measured on a held-out test set the model never saw, so it is a fair score on this data, not overfitting. What I can claim is this one dataset: one product, one machine, five production days. Other machines would need retraining and their own validation. So it is solid here, and the next step is testing on more machines.
 
 Q: Why XGBoost over the SVM?
 A: On the same test set XGBoost scored 0.97 on the scrap class versus 0.85 for the SVM, with fewer missed defects and fewer false alarms.

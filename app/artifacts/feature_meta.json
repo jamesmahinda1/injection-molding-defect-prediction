@@ -1,0 +1,155 @@
+{
+  "features": [
+    "melt_temp",
+    "mold_temp",
+    "fill_time",
+    "plasticizing_time",
+    "cycle_time",
+    "closing_force",
+    "clamping_force",
+    "torque_peak",
+    "torque_mean",
+    "back_pressure",
+    "injection_pressure",
+    "screw_position",
+    "shot_volume"
+  ],
+  "meta": {
+    "melt_temp": {
+      "min": 105.151,
+      "max": 142.864,
+      "default": 105.885,
+      "good_low": 105.573,
+      "good_high": 106.009,
+      "unit": "C"
+    },
+    "mold_temp": {
+      "min": 80.411,
+      "max": 82.112,
+      "default": 81.184,
+      "good_low": 80.908,
+      "good_high": 81.332,
+      "unit": "C"
+    },
+    "fill_time": {
+      "min": 6.084,
+      "max": 11.128,
+      "default": 6.292,
+      "good_low": 6.188,
+      "good_high": 6.292,
+      "unit": "s"
+    },
+    "plasticizing_time": {
+      "min": 2.83,
+      "max": 4.43,
+      "default": 3.34,
+      "good_low": 3.259,
+      "good_high": 4.081,
+      "unit": "s"
+    },
+    "cycle_time": {
+      "min": 74.8,
+      "max": 75.77,
+      "default": 75.74,
+      "good_low": 75.67,
+      "good_high": 75.76,
+      "unit": "s"
+    },
+    "closing_force": {
+      "min": 879.099,
+      "max": 922.0,
+      "default": 893.3,
+      "good_low": 890.0,
+      "good_high": 900.9,
+      "unit": "N"
+    },
+    "clamping_force": {
+      "min": 895.3,
+      "max": 939.2,
+      "default": 914.5,
+      "good_low": 910.8,
+      "good_high": 920.13,
+      "unit": "N"
+    },
+    "torque_peak": {
+      "min": 101.45,
+      "max": 127.3,
+      "default": 116.3,
+      "good_low": 105.5,
+      "good_high": 121.43,
+      "unit": "Nm"
+    },
+    "torque_mean": {
+      "min": 86.35,
+      "max": 110.9,
+      "default": 105.35,
+      "good_low": 91.0,
+      "good_high": 108.4,
+      "unit": "Nm"
+    },
+    "back_pressure": {
+      "min": 144.9,
+      "max": 148.55,
+      "default": 146.25,
+      "good_low": 145.3,
+      "good_high": 147.31,
+      "unit": "Bar"
+    },
+    "injection_pressure": {
+      "min": 812.55,
+      "max": 937.7,
+      "default": 882.9,
+      "good_low": 825.02,
+      "good_high": 900.55,
+      "unit": "Bar"
+    },
+    "screw_position": {
+      "min": 8.515,
+      "max": 9.02,
+      "default": 8.75,
+      "good_low": 8.55,
+      "good_high": 8.83,
+      "unit": "mm"
+    },
+    "shot_volume": {
+      "min": 18.54,
+      "max": 19.055,
+      "default": 18.82,
+      "good_low": 18.74,
+      "good_high": 19.02,
+      "unit": "cm3"
+    }
+  },
+  "examples": {
+    "good": {
+      "melt_temp": 105.515,
+      "mold_temp": 80.659,
+      "fill_time": 6.968,
+      "plasticizing_time": 4.01,
+      "cycle_time": 74.8,
+      "closing_force": 917.1,
+      "clamping_force": 935.9,
+      "torque_peak": 111.5,
+      "torque_mean": 93.0,
+      "back_pressure": 146.6,
+      "injection_pressure": 903.6,
+      "screw_position": 8.81,
+      "shot_volume": 18.76
+    },
+    "scrap": {
+      "melt_temp": 106.476,
+      "mold_temp": 80.617,
+      "fill_time": 7.124,
+      "plasticizing_time": 3.16,
+      "cycle_time": 74.83,
+      "closing_force": 886.9,
+      "clamping_force": 904.0,
+      "torque_peak": 116.9,
+      "torque_mean": 104.3,
+      "back_pressure": 145.6,
+      "injection_pressure": 922.3,
+      "screw_position": 8.82,
+      "shot_volume": 18.73
+    }
+  }
+}

@@ -7,3 +7,8 @@ venv/
 Thumbs.db
 data/
 *.db
+
+# Office temp lock files
+~$*
+*.tmp
+presentation/slides.pptx
